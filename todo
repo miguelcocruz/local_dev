@@ -1,0 +1,28 @@
+make up
+    - constroi a app de containers
+make ci
+    - format type lint pytest
+        test_load_user_data.py
+            apaga as linhas da tabela. Aplica a função e vê se o nº de linhas é igual a 10
+make run-etl
+    - executa o script de importação de dados para datawarehouse (load_user_data.py)
+        load_user_data.py
+            - generate random user data and import to a dw table
+make down
+
+
+folder structure:
+- containers
+    - warehouse
+        - sql to create table
+    - loader
+        - dockerfile
+        - requirements.txt
+- src/loader
+- test/integration
+- utils
+docker-compose.yml
+Makefile
+env
+README
+gitignore

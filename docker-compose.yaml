@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  loader:
+    container_name: loader
+    build:
+      context: ./
+      dockerfile: ./containers/loader/Dockerfile
+      # Dockerfile will always load starting from its relative path
+      # Dockerfile will only see files under its own relative path  
+      # if we want the loader/Dockerfile to copy all code
+      # (or just the src folder) to the container
+      # we need to set the context at the top
+      # and then we use "dockerfile" inside docker-compose.yml 
+      # to specify the location of the Dockerfile.
+      # But then inside the loader/Dockerfile we should be aware
+      # that the context is not the Dockerfile own relative path
+      # either way, I dont want to copy the files. I'll configure a volume
+      # so that I can develop with having to build the image everytime
+      # I make a change.
+    volumes:
+      - ./:/opt/sde/
+    environment:
+      - WAREHOUSE_USER=${WAREHOUSE_USER}
+      - WAREHOUSE_PASSWORD=${WAREHOUSE_PASSWORD}
+      - WAREHOUSE_HOST=${WAREHOUSE_HOST}
+      - WAREHOUSE_PORT=${WAREHOUSE_PORT}
+  warehouse:
+    image: postgres
+    container_name: warehouse
+    restart: always
+    environment:
+      - POSTGRES_USER=migas
+      - POSTGRES_PASSWORD=segredo
+    volumes:
+      - ./containers/warehouse:/docker-entrypoint-initdb.d
